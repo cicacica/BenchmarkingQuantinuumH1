@@ -9,7 +9,7 @@ The code here must be run with a Quantinuum account and has been developed using
 
 ### Prepare qubit and measure in computational basis
 
-Initialise a circuit and measure in comptational basis. Perform over an increasing number of shots and observe expected outcome.
+Initialise a circuit and measure in comptational basis. Perform over an increasing number of shots and observe expected outcome ([experiments/20240412_measuring_convergence_state_prep](experiments/20240412_measuring_convergence_state_prep))
 
 
 
