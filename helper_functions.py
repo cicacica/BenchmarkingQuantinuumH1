@@ -331,6 +331,27 @@ def V_gate(circuit, qubit: int, theta_int: int):
     theta = (theta_int % 8) * ma.pi / 4.0
     return circuit.Rx(-theta,qubit)
 
+
+
+
+def append_missing_for_single_qubit_outcome(result):
+    if (0,) in list(result.get_counts().keys()) and (1,) in list(result.get_counts().keys()):
+        return result.get_distribution()
+    elif (0,) in list(result.get_counts().keys()) and not (1,) in list(result.get_counts().keys()):
+        res = result.get_distribution()
+        res[(1,)] = 0.0
+        return res
+    elif not (0,) in list(result.get_counts().keys()) and (1,) in list(result.get_counts().keys()):
+        res = result.get_distribution()
+        res[(0,)] = 0.0
+        return res
+    elif not (0,) in list(result.get_counts().keys()) and not (1,) in list(result.get_counts().keys()):
+        raise ValueError("No (0,) nor (1,)")
+    else:
+        raise ValueError("Outcome indices not correct check")
+
+
+
     
 """
 Need to work this function out
