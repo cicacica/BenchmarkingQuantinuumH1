@@ -1,9 +1,4 @@
-
-
-
-
-
-from bitwise_operations import BitwiseOperations
+from src.bitwise_operations import BitwiseOperations
 import cProfile
 
 N = 3

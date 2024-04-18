@@ -7,24 +7,35 @@
 #           :
 ##################################################################
 
-from bitwise_operations import BitwiseOperations
-import cProfile
+from src.bitwise_operations import BitwiseOperations
 
 N = 3
 results = {(0, 0, 0): 51, (1, 1, 0): 49}
 
 # Create instances of your classes
 bitwise_operations = BitwiseOperations() 
+dist = bitwise_operations.return_complete_distribution(N, results)
+
+dist
 
 
+import matplotlib.pyplot as plt
 
-# Profile methods of the first class
-profiler = cProfile.Profile()
-profiler.enable()
-bitwise_operations.return_complete_distribution(N, results)
-profiler.disable()
-profiler.print_stats()
+# Your data
+data = {(0, 0, 0): 51, (0, 0, 1): 0, (0, 1, 0): 0, (0, 1, 1): 0, (1, 0, 0): 0, (1, 0, 1): 0, (1, 1, 0): 49, (1, 1, 1): 0}
 
+# Convert the keys from tuples to strings
+keys = [''.join(map(str, k)) for k in data.keys()]
 
+# Get the values
+values = list(data.values())
 
+# Create the bar chart
+plt.bar(keys, values)
 
+# Add labels
+plt.xlabel('Bins')
+plt.ylabel('Values')
+
+# Show the plot
+plt.show()
