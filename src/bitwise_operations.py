@@ -1,7 +1,7 @@
 import itertools
 from typing import List, Dict, Tuple
 
-class BitwiseOperationsV2:
+class BitwiseOperations:
     """
     A class to perform various bitwise operations.
     """

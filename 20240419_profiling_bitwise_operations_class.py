@@ -1,11 +1,7 @@
-##################################################################
-# Filename  : 20240418_test_best_script_build_functions.py
-# Author    : Jonathan Miller
-# Date      : 2024-04-18
-# Aim       : aim_script
-#           : Use this script to test the best functions
-#           :
-##################################################################
+
+
+
+
 
 from bitwise_operations import BitwiseOperations
 import cProfile
@@ -28,3 +24,10 @@ profiler.print_stats()
 
 
 
+
+    
+    
+    
+    
+    
+    
