@@ -16,26 +16,39 @@ import warnings
 import sympy as sy
 import helper_functions as hf
 
-def circuit_01(b: int, basis):
+# Set to generate randomness each shot
+def circuit_01():
     # Set up qircuit and registers
     c = Circuit()
-    qr = c.add_q_register("q", 1)
-    cr = c.add_c_register("c", 1)
+    quantum_register = c.add_q_register(name="quantum_reg", size=1)
+    classic_register = c.add_c_register(name="classical_reg", size=1)
+    conditional_register_Z_gate = c.add_c_register(name='Z_condition_gate_reg', size=1)
+    conditional_register_Z_value = c.add_c_register(name='Z_condition_reg', size=1)
+    conditional_register_X_value = c.add_c_register(name='X_condition_reg', size=1)
 
-    # Determine index
+    # Set index at 0 for single qubit circuit
     index = 0
+    # Create random bits
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_Z_value[index])
+    c.Reset(quantum_register[index])
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_X_value[index])
+    c.Reset(quantum_register[index])
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_Z_gate[index])
+    c.Reset(quantum_register[index])
 
-    c.H(0)
+    # Run actual circuit
+    c.H(qubit=quantum_register[index])
+    c.Z(qubit=quantum_register[index], condition=conditional_register_Z_gate[index])
 
-    # Condition gate X
-    if (b == 1):
-        c.Z(qr[index])
+    # Adjust to basis based on conditional gates
+    c.Sdg(quantum_register[index], condition=conditional_register_Z_value[index] & conditional_register_X_value[index])
+    c.H(quantum_register[index], condition=conditional_register_X_value[index])
 
-    # Adjust to apropriate basis
-    basis(c,qr,index)
-
-    # Measure in computational basis
-    c.Measure(qr[index], cr[index])
+    # Measure
+    c.Measure(qubit=quantum_register[index], bit=classic_register[index])
 
     return c
 
