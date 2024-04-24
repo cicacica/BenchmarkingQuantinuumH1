@@ -22,30 +22,30 @@ def circuit_01():
     c = Circuit()
     quantum_register = c.add_q_register(name="quantum_reg", size=1)
     classic_register = c.add_c_register(name="classical_reg", size=1)
-    conditional_register_Z_gate = c.add_c_register(name='Z_condition_gate_reg', size=1)
-    conditional_register_Z_value = c.add_c_register(name='Z_condition_reg', size=1)
-    conditional_register_X_value = c.add_c_register(name='X_condition_reg', size=1)
+    conditional_register_z_gate = c.add_c_register(name='z_condition_gate_reg', size=1)
+    conditional_register_z_value = c.add_c_register(name='z_condition_reg', size=1)
+    conditional_register_x_value = c.add_c_register(name='x_condition_reg', size=1)
 
     # Set index at 0 for single qubit circuit
     index = 0
     # Create random bits
     c.H(qubit=quantum_register[index])
-    c.Measure(qubit=quantum_register[index], bit=conditional_register_Z_value[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_z_value[index])
     c.Reset(quantum_register[index])
     c.H(qubit=quantum_register[index])
-    c.Measure(qubit=quantum_register[index], bit=conditional_register_X_value[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_x_value[index])
     c.Reset(quantum_register[index])
     c.H(qubit=quantum_register[index])
-    c.Measure(qubit=quantum_register[index], bit=conditional_register_Z_gate[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_z_gate[index])
     c.Reset(quantum_register[index])
 
     # Run actual circuit
     c.H(qubit=quantum_register[index])
-    c.Z(qubit=quantum_register[index], condition=conditional_register_Z_gate[index])
+    c.Z(qubit=quantum_register[index], condition=conditional_register_z_gate[index])
 
     # Adjust to basis based on conditional gates
-    c.Sdg(quantum_register[index], condition=conditional_register_Z_value[index] & conditional_register_X_value[index])
-    c.H(quantum_register[index], condition=conditional_register_X_value[index])
+    c.Sdg(quantum_register[index], condition=conditional_register_z_value[index] & conditional_register_x_value[index])
+    c.H(quantum_register[index], condition=conditional_register_x_value[index])
 
     # Measure
     c.Measure(qubit=quantum_register[index], bit=classic_register[index])
@@ -70,8 +70,8 @@ def circuit_02():
 
     
     # Basis conditions
-    conditional_register_Z_value = c.add_c_register(name='Z_condition_reg', size=1)
-    conditional_register_X_value = c.add_c_register(name='X_condition_reg', size=1)
+    conditional_register_z_value = c.add_c_register(name='z_condition_reg', size=1)
+    conditional_register_x_value = c.add_c_register(name='x_condition_reg', size=1)
 
     
     # Set index at 0 for single qubit circuit
@@ -98,13 +98,13 @@ def circuit_02():
     
     # Z basis condition
     c.H(qubit=quantum_register[index])
-    c.Measure(qubit=quantum_register[index], bit=conditional_register_Z_value[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_z_value[index])
     c.Reset(quantum_register[index])
 
     
     # X basis condition
     c.H(qubit=quantum_register[index])
-    c.Measure(qubit=quantum_register[index], bit=conditional_register_X_value[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_x_value[index])
     c.Reset(quantum_register[index])
 
     
@@ -121,8 +121,8 @@ def circuit_02():
 
 
     # Adjust to basis based on conditional gates
-    c.Sdg(quantum_register[index], condition=conditional_register_Z_value[index] & conditional_register_X_value[index])
-    c.H(quantum_register[index], condition=conditional_register_X_value[index])
+    c.Sdg(quantum_register[index], condition=conditional_register_z_value[index] & conditional_register_x_value[index])
+    c.H(quantum_register[index], condition=conditional_register_x_value[index])
 
     # Measure
     c.Measure(qubit=quantum_register[index], bit=classic_register[index])
