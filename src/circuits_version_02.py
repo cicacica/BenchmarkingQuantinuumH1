@@ -54,26 +54,78 @@ def circuit_01():
 
 
 
-def circuit_02(theta_integer: int, basis):
+def circuit_02():
+
+    
     # Set up qircuit and registers
     c = Circuit()
-    qr = c.add_q_register("q", 1)
-    cr = c.add_c_register("c", 1)
+    quantum_register = c.add_q_register(name="quantum_reg", size=1)
+    classic_register = c.add_c_register(name="classical_reg", size=1)
 
-    # Determine index
+    
+    # Rotation conditions
+    conditional_register_pi_rotation = c.add_c_register(name='pi_rotation_condition', size=1)
+    conditional_register_half_pi_rotation = c.add_c_register(name='half_pi_rotation_condition', size=1)
+    conditional_register_quarter_pi_rotation = c.add_c_register(name='quarter_pi_rotation_condition', size=1)
+
+    
+    # Basis conditions
+    conditional_register_Z_value = c.add_c_register(name='Z_condition_reg', size=1)
+    conditional_register_X_value = c.add_c_register(name='X_condition_reg', size=1)
+
+    
+    # Set index at 0 for single qubit circuit
     index = 0
 
+    
+    # Full pi rotation condition
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_pi_rotation[index])
+    c.Reset(quantum_register[index])
 
-    # Apply theta rotation
-    #theta = (theta_integer % 8) * ma.pi / 4.0 pyket adds pi inro Rx gate
-    theta = (theta_integer % 8) / 4.0 # mod 8 to ensure integers are 0...7
-    c.Rx(theta,qr[index])
+    
+    # Half pi rotation condition
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_half_pi_rotation[index])
+    c.Reset(quantum_register[index])
 
-    # Adjust to apropriate basis
-    basis(c,qr,index)
+    
+    # Quarter pi rotation condition
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_quarter_pi_rotation[index])
+    c.Reset(quantum_register[index])
 
-    # Measure in computational basis
-    c.Measure(qr[index], cr[index])
+    
+    # Z basis condition
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_Z_value[index])
+    c.Reset(quantum_register[index])
+
+    
+    # X basis condition
+    c.H(qubit=quantum_register[index])
+    c.Measure(qubit=quantum_register[index], bit=conditional_register_X_value[index])
+    c.Reset(quantum_register[index])
+
+    
+    # Full pi rotation condition
+    c.X(quantum_register[index], condition = conditional_register_pi_rotation[index])
+
+    
+    # Half pi rotation condition
+    c.V(quantum_register[index], condition = conditional_register_half_pi_rotation[index])
+
+    
+    # Quarter pi rotation condition
+    c.Rx(0.25, quantum_register[index], condition = conditional_register_quarter_pi_rotation[index])
+
+
+    # Adjust to basis based on conditional gates
+    c.Sdg(quantum_register[index], condition=conditional_register_Z_value[index] & conditional_register_X_value[index])
+    c.H(quantum_register[index], condition=conditional_register_X_value[index])
+
+    # Measure
+    c.Measure(qubit=quantum_register[index], bit=classic_register[index])
 
     return c
 
